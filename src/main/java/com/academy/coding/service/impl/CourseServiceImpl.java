@@ -14,8 +14,13 @@ import java.util.Optional;
 @Service
 public class CourseServiceImpl extends AbstractService implements CourseService {
 
+
     @Autowired
     EntityManager em;
+
+    @Autowired
+    private CourseRepo courseRepository;
+
 
     @Override
     public Optional<Course> findByTitle(String title) {
@@ -24,7 +29,7 @@ public class CourseServiceImpl extends AbstractService implements CourseService 
 
     @Override
     public int save(Course course) {
-        if (findByTitle(course.getTitle()) != null) {
+        if (findByTitle(course.getTitle()).isPresent() && findByTitle(course.getTitle()).get() != null ) {
             return -1;
         } else{
             courseRepository.save(course);
@@ -36,15 +41,16 @@ public class CourseServiceImpl extends AbstractService implements CourseService 
     public List<Course> findAll() {
         return courseRepository.findAll();
     }
-
-    public List<Course> serchByCriteria(CourseSeachVo courseSeachVo){
-        String query = init("Course", "c");
-        query+=addConstraint("c","title",courseSeachVo.getTitle());
-        return em.createQuery(query).getResultList();
+    @Override
+    public List<Course> searchByCriteria(CourseSeachVo courseSeachVo){
+        String query = init(Course.class);
+        query+=addConstraint("title",courseSeachVo.getTitle());
+        query+=addConstraint("note",courseSeachVo.getNoteMin(),courseSeachVo.getNoteMax());
+        return getResultList(query);
     }
 
-    @Autowired
-    private CourseRepo courseRepository;
-
-
+    @Override
+    public EntityManager getEm() {
+        return em;
+    }
 }

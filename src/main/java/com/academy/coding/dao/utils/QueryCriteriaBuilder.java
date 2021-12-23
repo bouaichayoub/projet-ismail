@@ -6,7 +6,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class QueryCriteriaBuilder {
 
-    /*  public static String  queryConstruct(CourseSeachVo courseSeachVo){
+   /*
+   public static String  queryConstruct(CourseSeachVo courseSeachVo){
+
         String query = "Select c from Course c Where 1";
         if (courseSeachVo != null) {
             if(courseSeachVo.getNoteMax() != null){
@@ -20,7 +22,8 @@ public class QueryCriteriaBuilder {
             }
         }
         return query;
-    }*/
+    }
+    */
 
 
 }
